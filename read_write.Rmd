@@ -1,0 +1,176 @@
+---
+title: "R-read"
+author: "xuzhougeng"
+date: "2/23/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 文件读取和写出
+
+文件类型
+
+- 文本数据
+- 二进制数据
+
+主要区别: 用vscode/记事本能够打开，并且里面不是乱码的就是文本数据, 否则就是二进制数据，需要用专门的工具打开
+
+Linux: less, head, tail, Vim 能够打开的文本
+
+例如xlsx,pptx,docx这些就是二进制，因为你用vscode打开就是乱码, 而csv就是文本数据
+
+## 文本数据的读取
+
+文本格式的可能命名
+
+- csv, comma sperate , tsv, tab sperate
+- txt
+- json
+- xml
+- fasta/fastq
+- bed
+- sam
+- vcf
+- ...
+
+读取方法
+
+- read.table
+- fread
+- 专门的格式读取函数， read.vcf, read.fastq 等
+
+```{r}
+df <- read.table("input.csv", sep = ",", header = FALSE, 
+                 stringsAsFactors = FALSE,
+                 comment.char = "!")
+df
+```
+
+- sep
+- header
+- stringAsFactor
+- comment.char
+- col.names(和header)不一样，是需要自己提供
+- row.names: 自己提供，或者位置信息
+
+```{r}
+df <- read.table("input.csv", sep = ",", header = FALSE, 
+                 stringsAsFactors = FALSE,
+                 col.names = c("Col1", "Col2", "Col3"),
+                 comment.char = "!")
+df
+```
+
+
+```{r}
+library(data.table)
+df <- fread(file = "input.csv", header = FALSE,
+            data.table = FALSE)
+```
+
+一个重要参数, `data.table = FALSE`
+
+如果你学会了data.table的操作逻辑, 那么就保持`data.table=TRUE`
+
+其他专门格式, 用专门的软件读取
+
+因子上就是数字. 因子什么时候使用？
+
+- 你会的时候再说。
+- 别人人代码用了因子
+
+4.0 默认FALSE
+
+## 二进制数据读取
+
+可能命名
+
+- xlsx
+- hdf5
+- bam
+- bcf
+- ... 
+
+只能用专门的函数读取，CellRanger输出hdf5格式，Seurat的Read10X
+
+xlsx, openxlsx可以读取xlsx格式
+
+```{r}
+openxlsx::read.xlsx("input.xlsx")
+```
+
+注意事项: 你的xlsx文件格式就必须是标准的，最好是导出csv文件进行读取
+
+## 数据的导出
+
+也分为文本和二进制，但是对于初学者，我们会用专门的函数进行写出.
+
+- read.table -> write.table
+- read.csv -> write.csv
+
+quota: 用于保证字符串的不被分开
+
+```{r}
+iris2 <- iris
+iris2$Species <- as.character(iris2$Species)
+iris2$Species[1] <- "a,b"
+```
+
+```{r}
+write.csv(iris2, "iris.csv", quote =FALSE)
+df <- read.csv("iris.csv")
+```
+
+openxlsx的用法
+
+```{r}
+out_list <- list(
+  "sheet1" = iris,
+  "sheet2" = iris,
+  "sheet3" = iris
+)
+```
+
+输出含有多个数据库的列表，保存为多个Sheet
+
+```{r}
+openxlsx::write.xlsx(out_list, "out.xlsx")
+```
+
+## R语言格式
+
+用于保存R对象，相当于存档。
+
+使用情况，数据分析到一半，还没有最终出结果，我们保存下来。
+
+- load, save: 能保存多个变量
+- readRDS, saveRDS: 单一变量
+
+```{r}
+saveRDS(expr_matrix, file = "matrix.Rds")
+```
+
+```{r}
+rm(list=ls())
+```
+
+```{r}
+df <- readRDS("matrix.Rds")
+```
+
+```{r}
+save(df, file = "df.Rdata")
+```
+
+```{r}
+rm(df)
+```
+
+```{r}
+load("df.Rdata")
+```
+
