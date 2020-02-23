@@ -9,7 +9,7 @@
 7. 如何加载一个已经安装的R包？
 8. 如果你已经安装了ggplot2, 但是在写代码的时候，发现ggplot函数运行的时候，输出Error in ggplot() : 没有"ggplot"这个函数
 9. 如果一个R函数，你不懂，你应该如何查看这个函数的帮助文档？
-10. 运行代码的时候，出现错误: 找不到对象'a'这个问题，原因是什么？
+10. 运行代码的时候，出现错误: 找不到对象'a'(object 'a' not found)  这个问题，原因是什么？
 11. 在数据类型中，整型和浮点型有什么区别？R语言的数字默认是什么类型？
 12. 请学习布尔运算的含义，R语言应该如何做布尔运算？101 > 102 | 101 < 102输出是什么？
 13. 向量和矩阵有什么区别？
@@ -24,7 +24,7 @@
 22. 继续上一题，iris$Sepal.Length和iris['Sepal.Length']有什么区别, 思考一下原因？
 23. 继续上一题, 请筛选出iris数据中Species为setosa第结果
 24. 请使用write.table将iris这个数据集输出成csv格式，（请查阅csv格式的含义）
-25. 请认真阅读read.table这个函数，理解sep, row.names, col.names, head,comment这些函数的含义
+25. 请认真阅读read.table这个函数，理解sep, row.names, col.names, head,comment.char这些参数的含义
 26. 请用read.table读取之前用write.table输出的数据
 27. 请说出read.table和read.csv之间的区别
 28. 请学习data.table的fread函数，并用它读取write.table输出的csv文件
